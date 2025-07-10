@@ -2,18 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-URL = "https://www.telfs.at/Freizeit_Veranstaltungen/Veranstaltungsleben/Veranstaltungskalender"
-BASE = "https://www.telfs.at"
-
+URL = "https://www.mayrhofen.at/de/pages/events-zillertal"
 res = requests.get(URL)
 soup = BeautifulSoup(res.text, "html.parser")
 
 entries = []
-for item in soup.select(".termine-list div.termine-item"):
-    name = item.select_one("h3").text.strip()
-    date = item.select_one(".datum").text.strip()
-    location = item.select_one(".ort").text.strip() if item.select_one(".ort") else "Telfs"
-    link = BASE + item.select_one("a")["href"]
+for event in soup.select(".event-teaser"):
+    name = event.select_one(".title").get_text(strip=True)
+    date = event.select_one(".date").get_text(strip=True)
+    location = event.select_one(".location").get_text(strip=True) if event.select_one(".location") else "Mayrhofen"
+    link = "https://www.mayrhofen.at" + event.select_one("a")["href"]
 
     entries.append({
         "name": name,
@@ -25,4 +23,3 @@ for item in soup.select(".termine-list div.termine-item"):
 
 with open("public/events.json", "w") as f:
     json.dump(entries, f, indent=2, ensure_ascii=False)
-print(soup.prettify()[:1000])  # Zeigt die ersten 1000 Zeichen des HTMLs
