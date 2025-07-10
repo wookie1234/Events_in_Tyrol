@@ -1,1 +1,33 @@
+name: Scrape Events
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # täglich um 02:00 UTC
+  workflow_dispatch:     # erlaubt manuelles Starten im Webinterface
+  push:                  # optional: bei jedem Push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install beautifulsoup4 requests
+
+      - name: Run scraper
+        run: python scrape_events.py
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add public/events.json
+          git commit -m "update events" || echo "No changes"
+          git push
 
