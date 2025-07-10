@@ -2,16 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
-URL = "https://www.mayrhofen.at/de/pages/events-zillertal"
+URL = "https://www.zillertalarena.com/winter/events/eventkalender/"
 res = requests.get(URL)
 soup = BeautifulSoup(res.text, "html.parser")
 
 entries = []
-for event in soup.select(".event-teaser"):
-    name = event.select_one(".title").get_text(strip=True)
-    date = event.select_one(".date").get_text(strip=True)
-    location = event.select_one(".location").get_text(strip=True) if event.select_one(".location") else "Mayrhofen"
-    link = "https://www.mayrhofen.at" + event.select_one("a")["href"]
+for event in soup.select(".event-list-entry"):
+    name = event.select_one(".event-title").get_text(strip=True)
+    date = event.select_one(".event-date").get_text(strip=True)
+    location = event.select_one(".event-location").get_text(strip=True) if event.select_one(".event-location") else "Zillertal"
+    link = URL
 
     entries.append({
         "name": name,
