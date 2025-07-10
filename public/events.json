@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "name": "Musik im Park",
+    "date": "2025-08-15",
+    "location": "Telfs Zentrum",
+    "cost": "frei",
+    "link": "https://www.telfs.at/veranstaltungen"
+  },
+  {
+    "name": "Bergfilmfestival",
+    "date": "2025-09-01",
+    "location": "Innsbruck - Leokino",
+    "cost": "10 €",
+    "link": "https://www.alpenverein.at/portal/bergsport/bergfilmfestival.php"
+  }
+]
