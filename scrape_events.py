@@ -25,3 +25,4 @@ for item in soup.select(".termine-list div.termine-item"):
 
 with open("public/events.json", "w") as f:
     json.dump(entries, f, indent=2, ensure_ascii=False)
+print(soup.prettify()[:1000])  # Zeigt die ersten 1000 Zeichen des HTMLs
