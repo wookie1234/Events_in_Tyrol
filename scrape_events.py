@@ -1,25 +1,30 @@
-import requests
-from bs4 import BeautifulSoup
+# scrape_events.py
 import json
+import os
 
-URL = "https://www.zillertalarena.com/winter/events/eventkalender/"
-res = requests.get(URL)
-soup = BeautifulSoup(res.text, "html.parser")
+# Beispielhafte Event-Daten (echte Scraper kommen später)
+events = [
+    {
+        "name": "Musik im Park",
+        "date": "2025-08-15",
+        "location": "Telfs Zentrum",
+        "cost": "frei",
+        "link": "https://www.telfs.at/veranstaltungen"
+    },
+    {
+        "name": "Bergfilmfestival",
+        "date": "2025-09-01",
+        "location": "Innsbruck - Leokino",
+        "cost": "10 €",
+        "link": "https://www.alpenverein.at/portal/bergsport/bergfilmfestival.php"
+    }
+]
 
-entries = []
-for event in soup.select(".event-list-entry"):
-    name = event.select_one(".event-title").get_text(strip=True)
-    date = event.select_one(".event-date").get_text(strip=True)
-    location = event.select_one(".event-location").get_text(strip=True) if event.select_one(".event-location") else "Zillertal"
-    link = URL
+# Stelle sicher, dass Ordner existiert
+os.makedirs("public", exist_ok=True)
 
-    entries.append({
-        "name": name,
-        "date": date,
-        "location": location,
-        "cost": "",
-        "link": link
-    })
+# Speichern der Events in JSON-Datei
+with open("public/events.json", "w", encoding="utf-8") as f:
+    json.dump(events, f, ensure_ascii=False, indent=2)
 
-with open("public/events.json", "w") as f:
-    json.dump(entries, f, indent=2, ensure_ascii=False)
+print(f"{len(events)} Events gespeichert.")
